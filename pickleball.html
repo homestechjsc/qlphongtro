@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giải Đấu Pickleball Tứ Hùng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --pickleball-yellow: #ccff00;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--pickleball-yellow);
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Inputs */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"] {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        button.secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        button.secondary:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        /* Matches */
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .match-card {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .player-name {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .player-name.right {
+            text-align: right;
+        }
+
+        .score-input {
+            width: 45px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: var(--pickleball-yellow);
+            border-radius: 6px;
+            margin: 0 6px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rank-1 { color: #ffd700; font-weight: bold; }
+        .rank-2 { color: #c0c0c0; font-weight: bold; }
+        .rank-3 { color: #cd7f32; font-weight: bold; }
+
+        /* Podium */
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 16px;
+            height: 160px;
+            margin-top: 10px;
+        }
+
+        .podium-place {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+
+        .podium-box {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .p-1 { height: 100px; background: #ffd700; }
+        .p-2 { height: 75px; background: #c0c0c0; }
+        .p-3 { height: 50px; background: #cd7f32; }
+
+        .podium-name {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .shake {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-2px, 0deg) rotate(-1deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            60% { transform: translate(-1px, 1px) rotate(0deg); }
+            80% { transform: translate(2px, 1px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @media (max-width: 600px) {
+            .match-card {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .player-name.right {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🎾 Giải Pickleball Tứ Hùng</h1>
+    </header>
+
+    <!-- Danh sách VĐV -->
+    <div class="card">
+        <h2>1. Nhập danh sách VĐV</h2>
+        <div class="input-grid">
+            <input type="text" id="p1" placeholder="VĐV 1" value="Nguyễn Văn A">
+            <input type="text" id="p2" placeholder="VĐV 2" value="Trần Văn B">
+            <input type="text" id="p3" placeholder="VĐV 3" value="Lê Văn C">
+            <input type="text" id="p4" placeholder="VĐV 4" value="Phạm Văn D">
+        </div>
+        <div class="btn-group">
+            <button onclick="shufflePlayers()">🎲 Bốc thăm vị trí</button>
+            <button class="secondary" onclick="resetTournament()">🔄 Làm mới giải đấu</button>
+        </div>
+    </div>
+
+    <!-- Danh sách Trận đấu -->
+    <div class="card">
+        <h2>2. Lịch thi đấu & Tỷ số</h2>
+        <div class="matches-grid" id="matchesList">
+            <!-- Render động bằng JS -->
+        </div>
+    </div>
+
+    <!-- Bảng xếp hạng -->
+    <div class="card">
+        <h2>3. Bảng Xếp Hạng</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hạng</th>
+                    <th>VĐV</th>
+                    <th>Thắng</th>
+                    <th>Hiệu số</th>
+                    <th>Điểm ghi</th>
+                </tr>
+            </thead>
+            <tbody id="standingsBody">
+                <!-- Render động bằng JS -->
+            </tbody>
+        </table>
+
+        <!-- Bục trao giải -->
+        <div class="podium" id="podiumView">
+            <div class="podium-place">
+                <span class="podium-name" id="podium2">-</span>
+                <div class="podium-box p-2">2</div>
+            </div>
+            <div class="podium-place">
+                <span class="podium-name" id="podium1">-</span>
+                <div class="podium-box p-1">1</div>
+            </div>
+            <div class="podium-place">
+                <span class="podium-name" id="podium3">-</span>
+                <div class="podium-box p-3">3</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Khởi tạo các cặp đấu cố định theo chỉ số [p1, p2]
+    const matchPairs = [
+        [0, 1], [2, 3], // Vòng 1
+        [0, 2], [1, 3], // Vòng 2
+        [0, 3], [1, 2]  // Vòng 3
+    ];
+
+    let players = [];
+    let matchScores = Array(6).fill().map(() => ({ s1: "", s2: "" }));
+
+    window.onload = function() {
+        loadLocalStorage();
+        initApp();
+    };
+
+    function initApp() {
+        getPlayersFromInputs();
+        renderMatches();
+        calculateStandings();
+    }
+
+    function getPlayersFromInputs() {
+        players = [
+            document.getElementById('p1').value.trim() || 'VĐV 1',
+            document.getElementById('p2').value.trim() || 'VĐV 2',
+            document.getElementById('p3').value.trim() || 'VĐV 3',
+            document.getElementById('p4').value.trim() || 'VĐV 4'
+        ];
+    }
+
+    // Hiệu ứng Bốc thăm
+    function shufflePlayers() {
+        getPlayersFromInputs();
+        const inputs = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3'), document.getElementById('p4')];
+        
+        inputs.forEach(input => input.classList.add('shake'));
+
+        setTimeout(() => {
+            // Shuffle Array
+            for (let i = players.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [players[i], players[j]] = [players[j], players[i]];
+            }
+            
+            // Cập nhật lại input
+            inputs.forEach((input, index) => {
+                input.value = players[index];
+                input.classList.remove('shake');
+            });
+
+            // Clear điểm số khi bốc thăm mới
+            matchScores = Array(6).fill().map(() => ({ s1: "", s2: "" }));
+            saveLocalStorage();
+            renderMatches();
+            calculateStandings();
+        }, 600);
+    }
+
+    function renderMatches() {
+        const matchesContainer = document.getElementById('matchesList');
+        matchesContainer.innerHTML = '';
+
+        matchPairs.forEach((pair, index) => {
+            const p1Name = players[pair[0]];
+            const p2Name = players[pair[1]];
+            const score = matchScores[index];
+
+            const matchEl = document.createElement('div');
+            matchEl.className = 'match-card';
+            matchEl.innerHTML = `
+                <span class="player-name">${p1Name}</span>
+                <div>
+                    <input type="number" class="score-input" value="${score.s1}" onchange="updateScore(${index}, 1, this.value)">
+                    <span>-</span>
+                    <input type="number" class="score-input" value="${score.s2}" onchange="updateScore(${index}, 2, this.value)">
+                </div>
+                <span class="player-name right">${p2Name}</span>
+            `;
+            matchesContainer.appendChild(matchEl);
+        });
+    }
+
+    function updateScore(matchIndex, playerPos, val) {
+        if (playerPos === 1) matchScores[matchIndex].s1 = val !== "" ? parseInt(val) : "";
+        if (playerPos === 2) matchScores[matchIndex].s2 = val !== "" ? parseInt(val) : "";
+
+        saveLocalStorage();
+        calculateStandings();
+    }
+
+    function calculateStandings() {
+        getPlayersFromInputs();
+
+        // Khởi tạo stats cho từng VĐV
+        let stats = players.map((name, index) => ({
+            id: index,
+            name: name,
+            wins: 0,
+            pointDiff: 0,
+            pointsScored: 0
+        }));
+
+        // Bảng lưu kết quả đối đầu dạng ma trận Head-to-Head
+        let h2h = Array(4).fill().map(() => Array(4).fill(0));
+
+        // Tính toán chỉ số từ các trận đấu
+        matchPairs.forEach((pair, index) => {
+            const s1 = matchScores[index].s1;
+            const s2 = matchScores[index].s2;
+
+            if (s1 !== "" && s2 !== "" && !isNaN(s1) && !isNaN(s2)) {
+                const p1 = pair[0];
+                const p2 = pair[1];
+
+                stats[p1].pointsScored += s1;
+                stats[p2].pointsScored += s2;
+
+                stats[p1].pointDiff += (s1 - s2);
+                stats[p2].pointDiff += (s2 - s1);
+
+                if (s1 > s2) {
+                    stats[p1].wins += 1;
+                    h2h[p1][p2] = 1;  // p1 thắng p2
+                    h2h[p2][p1] = -1; // p2 thua p1
+                } else if (s2 > s1) {
+                    stats[p2].wins += 1;
+                    h2h[p2][p1] = 1;  // p2 thắng p1
+                    h2h[p1][p2] = -1; // p1 thua p2
+                }
+            }
+        });
+
+        // Sắp xếp xếp hạng theo chuẩn Thể thao
+        stats.sort((a, b) => {
+            // 1. So sánh số trận Thắng
+            if (b.wins !== a.wins) return b.wins - a.wins;
+
+            // 2. So sánh Đối đầu trực tiếp (Head-to-Head) nếu 2 người bằng trận thắng
+            if (h2h[a.id][b.id] !== 0) {
+                return h2h[b.id][a.id]; // Trả về dương nếu b thắng a, âm nếu a thắng b
+            }
+
+            // 3. So sánh Hiệu số điểm
+            if (b.pointDiff !== a.pointDiff) return b.pointDiff - a.pointDiff;
+
+            // 4. So sánh Tổng điểm ghi được
+            return b.pointsScored - a.pointsScored;
+        });
+
+        renderStandingsTable(stats);
+    }
+
+    function renderStandingsTable(stats) {
+        const tbody = document.getElementById('standingsBody');
+        tbody.innerHTML = '';
+
+        stats.forEach((player, index) => {
+            const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="${rankClass}">#${index + 1}</td>
+                <td style="font-weight: 500">${player.name}</td>
+                <td>${player.wins}</td>
+                <td>${player.pointDiff > 0 ? '+' + player.pointDiff : player.pointDiff}</td>
+                <td>${player.pointsScored}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Cập nhật Bục trao giải
+        document.getElementById('podium1').innerText = stats[0] ? stats[0].name : '-';
+        document.getElementById('podium2').innerText = stats[1] ? stats[1].name : '-';
+        document.getElementById('podium3').innerText = stats[2] ? stats[2].name : '-';
+    }
+
+    function saveLocalStorage() {
+        const data = {
+            players: [
+                document.getElementById('p1').value,
+                document.getElementById('p2').value,
+                document.getElementById('p3').value,
+                document.getElementById('p4').value
+            ],
+            scores: matchScores
+        };
+        localStorage.setItem('pickleball_tournament', JSON.stringify(data));
+    }
+
+    function loadLocalStorage() {
+        const saved = localStorage.getItem('pickleball_tournament');
+        if (saved) {
+            const data = JSON.parse(saved);
+            if (data.players) {
+                document.getElementById('p1').value = data.players[0] || "";
+                document.getElementById('p2').value = data.players[1] || "";
+                document.getElementById('p3').value = data.players[2] || "";
+                document.getElementById('p4').value = data.players[3] || "";
+            }
+            if (data.scores) {
+                matchScores = data.scores;
+            }
+        }
+    }
+
+    function resetTournament() {
+        if (confirm("Bạn có chắc muốn xóa tất cả dữ liệu trận đấu hiện tại?")) {
+            localStorage.removeItem('pickleball_tournament');
+            matchScores = Array(6).fill().map(() => ({ s1: "", s2: "" }));
+            initApp();
+        }
+    }
+
+    // Lắng nghe sự kiện gõ tên VĐV để cập nhật real-time
+    ['p1', 'p2', 'p3', 'p4'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            saveLocalStorage();
+            renderMatches();
+            calculateStandings();
+        });
+    });
+</script>
+
+</body>
+</html>
