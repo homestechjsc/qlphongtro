@@ -8,10 +8,16 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='128' fill='%23030712'/><circle cx='256' cy='256' r='180' fill='%23ccff00'/><circle cx='200' cy='200' r='20' fill='%23030712'/><circle cx='312' cy='200' r='20' fill='%23030712'/><circle cx='256' cy='256' r='20' fill='%23030712'/><circle cx='200' cy='312' r='20' fill='%23030712'/><circle cx='312' cy='312' r='20' fill='%23030712'/></svg>",
+      "src": "./icon.svg",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
